@@ -13,7 +13,7 @@ public class ProjectManager {
 			System.out.println("1. Find word with slang word");
 			System.out.println("2. Find word with definition");
 //			System.out.println("3. Find word with slang word");
-//			System.out.println("4. Find word with slang word");
+			System.out.println("4. Add slang word");
 //			System.out.println("5. Find word with slang word");
 //			System.out.println("6. Find word with slang word");
 //			System.out.println("7. Find word with slang word");
@@ -42,6 +42,9 @@ public class ProjectManager {
 					Instant end1 = Instant.now();
 					Duration timeElapsed1 = Duration.between(start1, end1);
 					System.out.println("\nTime taken: "+ timeElapsed1.toMillis() +" milliseconds");
+					break;
+				case 4:
+					sm.addNew();
 					break;
 				default:
 					break;

@@ -61,4 +61,8 @@ public class FileManager {
 		
 		return dictionary;
 	}
+	public ArrayList<String> getHistory(){
+		ArrayList<String> histories = new ArrayList<String>();
+		return histories;
+	}
 }
