@@ -13,8 +13,8 @@ public class FileManager {
 	
 	FileManager(){
 		String sourceFolder = System.getProperty("user.dir");
-		this.resetPath = sourceFolder+"/data/slang.txt";
-		this.dataPath = sourceFolder+"/data/slang.txt";
+		this.resetPath = sourceFolder+"/data/backup.txt";
+		this.dataPath = sourceFolder+"/data/data.txt";
 		this.searchHistoryPath = sourceFolder+"/data/search-history.txt";
 		this.deleteHistoryPath = sourceFolder+"/data/delete-history.txt";
 	}
@@ -30,11 +30,12 @@ public class FileManager {
 		if(!file.isDirectory()) return true;
 		return false;
 	}
+	
+	
 	public HashMap<String, String[]> getDictionary(){
 		HashMap<String, String[]> dictionary = new HashMap<String, String[]>();
 		
 		File file = new File(this.dataPath);
-		System.out.println(this.dataPath);
 		if(isValidFile(file)) {
 			try {
 				FileReader fis = new FileReader(file);
@@ -56,7 +57,37 @@ public class FileManager {
 			}
 		}
 		else {
-			System.out.print("Duong dan khong hop le");
+			System.out.print("The path is not valid");
+		}
+		
+		return dictionary;
+	}
+	public HashMap<String, String[]> getDictionary(String Path){
+		HashMap<String, String[]> dictionary = new HashMap<String, String[]>();
+		
+		File file = new File(Path);
+		if(isValidFile(file)) {
+			try {
+				FileReader fis = new FileReader(file);
+				BufferedReader br = new BufferedReader(fis);
+				String line;
+				while((line = br.readLine()) != null) {
+					String[] splitLine = line.split("`");
+					if(splitLine.length >= 2) {
+						String word = splitLine[0];
+						String[] definition =  splitLine[1].split("\\s*\\|\\s*");
+						dictionary.put(word, definition);
+					}
+					
+				}
+				br.close();
+			}
+			catch(Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+		else {
+			System.out.print("The path is not valid");
 		}
 		
 		return dictionary;
@@ -64,5 +95,9 @@ public class FileManager {
 	public ArrayList<String> getHistory(){
 		ArrayList<String> histories = new ArrayList<String>();
 		return histories;
+	}
+	
+	public HashMap<String, String[]> resetDictionary() {	
+		return this.getDictionary(this.resetPath);
 	}
 }

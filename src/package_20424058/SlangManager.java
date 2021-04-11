@@ -2,6 +2,7 @@ package package_20424058;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map.Entry;
@@ -12,8 +13,9 @@ public class SlangManager {
 	public HashMap<String, String[]> dictionary = new HashMap<String, String[]>();
 	public ArrayList<String> searchHistory = new ArrayList<String>();
 	
-	public SlangManager(HashMap<String, String[]> dictionary) {
+	public SlangManager(HashMap<String, String[]> dictionary, ArrayList<String> searchHistory) {
 		this.dictionary = dictionary;
+		this.searchHistory = searchHistory;
 	}
 	public void showWord(String word, String[] definition) {
 		System.out.println(word +": " + String.join(", ", definition));
@@ -49,6 +51,14 @@ public class SlangManager {
 			System.out.println(i+1 +": "+definition[i].trim());
 		}
 	}
+	public void showHistory() {
+		Collections.reverse(searchHistory);
+		System.out.println("\n====Recent Searches====");
+		for (String string : searchHistory) {
+			System.out.println(string);
+		}
+	}
+	
 	public void addNew() {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter a slang word to add: ");
@@ -58,20 +68,68 @@ public class SlangManager {
 		String[] definitions = definition.split("\\s*,\\s*");
 		String[] existWord = this.dictionary.get(word);
 		boolean isExist = false;
+		
+		
 		if(existWord == null) {
 			this.dictionary.put(word, definitions);
 		}
 		else {
-			isExist = true;
-			String[] newDefinitions = new String[existWord.length + definitions.length];
-			System.arraycopy(existWord, 0, newDefinitions, 0, existWord.length);
-			System.arraycopy(definitions, 0, newDefinitions, existWord.length, definitions.length);
-			this.dictionary.put(word, newDefinitions);
+			System.out.println("The slang already exists.");
+			System.out.println("1. Override");
+			System.out.println("2. Dupplicate");
+			System.out.print("You choose? ");
+			int choose = sc.nextInt();
+			if(choose == 1) {
+				this.dictionary.put(word, definitions);
+			}
+			else if(choose == 2) {
+				String[] newDefinitions = new String[existWord.length + definitions.length];
+				System.arraycopy(existWord, 0, newDefinitions, 0, existWord.length);
+				System.arraycopy(definitions, 0, newDefinitions, existWord.length, definitions.length);
+				this.dictionary.put(word, newDefinitions);
+			}
+			else {
+				System.out.println("There is no such option");
+			}
+			
 		}
 		
-		// add to file
+		// Add to file
 		
 		
 		
 	}
+	public void addToHistory(String word) {
+		String rs = word + " | " + DateTime.getTimeNow();
+		this.searchHistory.add(rs);
+	}
+
+	public void delete(String word) {
+
+		if(this.dictionary.get(word) == null) {
+			System.out.println("Not found.");
+			return;
+		}
+		
+		System.out.println("Are you sure delete this word?");
+		System.out.println("1. Yes");
+		System.out.println("2. No");
+		System.out.print("You choose? ");
+		int chosse = new Scanner(System.in).nextInt();
+		if(chosse == 1) {
+			if(this.dictionary.remove(word) != null) {
+				System.out.println("This word has been deleted");
+			}
+			else {
+				System.out.println("Somthing is missing. Please try again");
+			}
+		}
+		else if(chosse ==2) {
+			return;
+		}
+		else {
+			System.out.println("There is no such option");
+		}
+	}
+
 }
