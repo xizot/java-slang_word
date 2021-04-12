@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map.Entry;
-import java.util.Arrays;
+import java.util.Random;
 
 
 public class SlangManager {
@@ -32,6 +32,7 @@ public class SlangManager {
 	        }
 		 return words;
 	}
+	
 	public void showWords(ArrayList<String> words) {
 		if(words.size() <= 0) {
 			System.out.print("Not found.");
@@ -44,7 +45,7 @@ public class SlangManager {
 	}
 	public void showDefinition(String[] definition) {
 		if(definition == null) {
-			System.out.print("Not Found.");
+			System.out.print("Not found.");
 			return;
 		}
 		for (int i = 0; i < definition.length; i++) {
@@ -67,9 +68,7 @@ public class SlangManager {
 		String definition = sc.nextLine();
 		String[] definitions = definition.split("\\s*,\\s*");
 		String[] existWord = this.dictionary.get(word);
-		boolean isExist = false;
-		
-		
+
 		if(existWord == null) {
 			this.dictionary.put(word, definitions);
 		}
@@ -91,13 +90,7 @@ public class SlangManager {
 			else {
 				System.out.println("There is no such option");
 			}
-			
 		}
-		
-		// Add to file
-		
-		
-		
 	}
 	public void addToHistory(String word) {
 		String rs = word + " | " + DateTime.getTimeNow();
@@ -131,5 +124,31 @@ public class SlangManager {
 			System.out.println("There is no such option");
 		}
 	}
-
+	public void update() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter a slang word to edit: ");
+		String word = sc.nextLine();
+		String[] existWord = this.dictionary.get(word);
+		
+		if(existWord == null) {
+			System.out.println("Not found");
+		}
+		else {
+			System.out.print("Enter new definition of this word(split with ','): ");
+			String definition = sc.nextLine();
+			String[] definitions = definition.split("\\s*,\\s*");
+			this.dictionary.put(word, definitions);
+			System.out.println("Update successfully");
+		}
+	}
+	
+	public String randomSlang() {
+		Random random = new Random();
+		ArrayList<String> keys = new ArrayList<String>(this.dictionary.keySet());
+		String word = keys.get(random.nextInt(keys.size()));
+//		String[] definitions = this.dictionary.get(word);
+//		System.out.println("===Random slang word====");
+//		System.out.println(word +" : "+ String.join(",", definitions));
+		return word;
+	}
 }
