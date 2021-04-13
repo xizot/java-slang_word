@@ -92,6 +92,26 @@ public class FileManager {
 	}
 	public ArrayList<String> getHistory(){
 		ArrayList<String> histories = new ArrayList<String>();
+
+		File file = new File(this.searchHistoryPath);
+		if(isValidFile(file)) {
+			try {
+				FileReader fis = new FileReader(file);
+				BufferedReader br = new BufferedReader(fis);
+				String line;
+				while((line = br.readLine()) != null) {
+					histories.add(line);
+				}
+				br.close();
+			}
+			catch(Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+		else {
+			System.out.print("The search history path is not valid");
+		}
+
 		return histories;
 	}
 	

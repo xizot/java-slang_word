@@ -1,5 +1,6 @@
 package package_20424058;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,7 +8,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map.Entry;
 import java.util.Random;
-
 
 public class SlangManager {
 	public HashMap<String, String[]> dictionary = new HashMap<String, String[]>();
@@ -55,8 +55,8 @@ public class SlangManager {
 	public void showHistory() {
 		Collections.reverse(searchHistory);
 		System.out.println("\n====Recent Searches====");
-		for (String string : searchHistory) {
-			System.out.println(string);
+		for (int i = 0; i < searchHistory.size(); i++) {
+			System.out.println((i+1) +". " +searchHistory.get(i));
 		}
 	}
 	
@@ -142,13 +142,74 @@ public class SlangManager {
 		}
 	}
 	
-	public String randomSlang() {
+	public String[] randomSlang() {
 		Random random = new Random();
 		ArrayList<String> keys = new ArrayList<String>(this.dictionary.keySet());
 		String word = keys.get(random.nextInt(keys.size()));
-//		String[] definitions = this.dictionary.get(word);
-//		System.out.println("===Random slang word====");
-//		System.out.println(word +" : "+ String.join(",", definitions));
-		return word;
+		String[] definitions = this.dictionary.get(word);
+		String[] rs = {word, String.join(",", definitions)};
+		return rs;
+	}
+
+	public void slangQuiz(){
+		String[] question = randomSlang();
+		ArrayList<String> answers = new ArrayList<String>();
+		answers.add(question[1]);
+		int idx = 0;
+		while (idx < 3){
+			String[] newRandom = randomSlang();
+			while (answers.contains(newRandom[1])){
+				newRandom = randomSlang();
+			}
+			answers.add(newRandom[1]);
+			idx++;
+		}
+		Collections.shuffle(answers);
+		System.out.println("Definition of ["+ question[0] +"]: ");
+		for (int i = 0; i < answers.size(); i++) {
+			System.out.println((i+1) +". "+ answers.get(i));
+		}
+
+		System.out.print("Enter your answer: ");
+		int ans = new Scanner(System.in).nextInt();
+
+		if(ans <= 4 && ans > 0 && answers.get(ans - 1).equals(question[1])){
+			System.out.println("(^_^)/ Congratulations!!");
+		}
+		else{
+			System.out.println("(-_-) Incorrect");
+		}
+
+	}
+
+	public void definitionQuiz(){
+		String[] question = randomSlang();
+		ArrayList<String> answers = new ArrayList<String>();
+		answers.add(question[0]);
+		int idx = 0;
+		while (idx < 3){
+			String[] newRandom = randomSlang();
+			while (answers.contains(newRandom[0])){
+				newRandom = randomSlang();
+			}
+			answers.add(newRandom[0]);
+			idx++;
+		}
+		Collections.shuffle(answers);
+		System.out.println("Slang word of ["+ question[1] +"]: ");
+		for (int i = 0; i < answers.size(); i++) {
+			System.out.println((i+1) +". "+ answers.get(i));
+		}
+
+		System.out.print("Enter your answer: ");
+		int ans = new Scanner(System.in).nextInt();
+
+		if(ans <= 4 && ans > 0 && answers.get(ans - 1).equals(question[0])){
+			System.out.println("(^_^)/ Congratulations!!");
+		}
+		else{
+			System.out.println("(-_-) Incorrect");
+		}
+
 	}
 }
