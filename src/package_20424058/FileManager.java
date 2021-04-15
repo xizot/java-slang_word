@@ -1,10 +1,10 @@
 package package_20424058;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FileManager {
 	String resetPath, dataPath,searchHistoryPath,deleteHistoryPath;
@@ -36,7 +36,7 @@ public class FileManager {
 		File file = new File(this.dataPath);
 		if(isValidFile(file)) {
 			try {
-				FileReader fis = new FileReader(file);
+				FileReader fis = new FileReader(file,StandardCharsets.UTF_8);
 				BufferedReader br = new BufferedReader(fis);
 				String line;
 				while((line = br.readLine()) != null) {
@@ -115,7 +115,69 @@ public class FileManager {
 		return histories;
 	}
 	
-	public HashMap<String, String[]> resetDictionary() {	
+	public HashMap<String, String[]> resetDictionary() {
 		return this.getDictionary(this.resetPath);
+	}
+
+
+	public boolean saveDictionary(HashMap<String, String[]> dictionary){
+		File file = new File(this.dataPath);
+		if(isValidFile(file)){
+
+			try{
+				if(file.delete()){
+					file.createNewFile();
+				}
+				FileWriter fr = new FileWriter(file, StandardCharsets.UTF_8,true);
+				BufferedWriter bw = new BufferedWriter(fr);
+				for(Map.Entry<String, String[]> entry : dictionary.entrySet()) {
+					String key = entry.getKey();
+					String value = String.join("|",entry.getValue());
+					String line = key +"`"+value + System.lineSeparator();
+					bw.write(line);
+				}
+				bw.close();
+				fr.close();
+				return true;
+			}catch(Exception ex){
+
+			}
+		}
+		return false;
+	}
+	public boolean saveHistory(ArrayList<String> histories){
+		File file = new File(this.searchHistoryPath);
+		if(isValidFile(file)){
+			try{
+				if(file.delete()){
+					file.createNewFile();
+				}
+				FileWriter fw = new FileWriter(file,StandardCharsets.UTF_8,true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				for (String search: histories) {
+						bw.write(search + System.lineSeparator());
+				}
+				bw.close();
+				fw.close();
+				return true;
+			}
+			catch(Exception ex){}
+		}
+		return false;
+	}
+
+	public void clearFile(String Path){
+		try{
+			FileWriter fw = new FileWriter(Path, false);
+			PrintWriter pw = new PrintWriter(fw, false);
+			pw.flush();
+			pw.close();
+			fw.close();
+		}
+		catch(Exception ex){}
+	}
+
+	public void clearHistory(){
+		this.clearFile(this.searchHistoryPath);
 	}
 }

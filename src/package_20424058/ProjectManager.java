@@ -21,6 +21,7 @@ public class ProjectManager {
 		char y = 'y';
 		Instant start,end = null;
 		Duration timeElapsed = null;
+		Scanner scanner = new Scanner(System.in);
 		while(y == 'y') {
 			clearConsole();
 			System.out.println("===========MENU=================");
@@ -37,7 +38,7 @@ public class ProjectManager {
 			System.out.println("0. Exit");
 			System.out.println("================================");
 			System.out.print("You chosse?  ");
-			Scanner scanner = new Scanner(System.in);
+
 			int chosse = scanner.nextInt();
 			scanner.nextLine();
 			if(chosse == 0){
@@ -103,8 +104,23 @@ public class ProjectManager {
 			y = scanner.next().charAt(0);
 		}
 
-		System.out.println("Do you want to save the current dictionary");
-		System.out.println("Do you want to save the search history");
-		System.out.println("Do you want to clear search history");
+		System.out.print("\nDo you want to save the current dictionary: ");
+		char saveDictionary = Character.toLowerCase(scanner.next().charAt(0));
+		if(saveDictionary  == 'y' && fm.saveDictionary(sm.dictionary)) {
+			System.out.println("Saved current dictionary");	;
+		}
+
+		System.out.print("\nDo you want to save the search history: ");
+		char saveHistory = scanner.next().charAt(0);
+		if(saveHistory  == 'y' && fm.saveHistory(sm.searchHistory)) {
+			System.out.println("Saved history");	;
+		}
+
+		System.out.print("\nDo you want to remove search history: ");
+		char clearHistory = scanner.next().charAt(0);
+		if(clearHistory == 'y'){
+			fm.clearHistory();
+			System.out.println("Removed history");
+		}
 	}
 }
