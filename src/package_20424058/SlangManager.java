@@ -1,13 +1,8 @@
 package package_20424058;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
 
 public class SlangManager {
 	public HashMap<String, String[]> dictionary = new HashMap<String, String[]>();
@@ -23,13 +18,23 @@ public class SlangManager {
 	public String[] findWithSlangWord(String word) {
 		return this.dictionary.get(word);
 	}
+
+	public boolean isContains(String[] arr, String keyword){
+		for (String string: arr) {
+			string = string.toLowerCase();
+			keyword = keyword.toLowerCase();
+			if(string.contains(keyword) || keyword.contains(string))
+				return true;
+		}
+		return false;
+	}
+
 	public ArrayList<String> findWithDefinition(String definition) {
 		ArrayList<String> words = new ArrayList<String>();
 		 for (Entry<String, String[]> entry : this.dictionary.entrySet()) {
-			 	String[] value = entry.getValue();
-			 	if(Arrays.asList(value).contains(definition))
-	            	words.add(entry.getKey());
-	        }
+			 if (isContains(entry.getValue(), definition))
+				 words.add(entry.getKey());
+		 }
 		 return words;
 	}
 	
