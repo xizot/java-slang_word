@@ -1,20 +1,17 @@
 package package_20424058;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.Map.Entry;
 
 public class SlangManager {
-	public HashMap<String, String[]> dictionary = new HashMap<String, String[]>();
-	public ArrayList<String> searchHistory = new ArrayList<String>();
+	public HashMap<String, String[]> dictionary = new HashMap<>();
+	public ArrayList<String> searchHistory = new ArrayList<>();
 	
 	public SlangManager(HashMap<String, String[]> dictionary, ArrayList<String> searchHistory) {
 		this.dictionary = dictionary;
 		this.searchHistory = searchHistory;
 	}
-	public void showWord(String word, String[] definition) {
-		System.out.println(word +": " + String.join(", ", definition));
-	}
+
 	public String[] findWithSlangWord(String word) {
 		return this.dictionary.get(word);
 	}
@@ -30,7 +27,7 @@ public class SlangManager {
 	}
 
 	public ArrayList<String> findWithDefinition(String definition) {
-		ArrayList<String> words = new ArrayList<String>();
+		ArrayList<String> words = new ArrayList<>();
 		 for (Entry<String, String[]> entry : this.dictionary.entrySet()) {
 			 if (isContains(entry.getValue(), definition))
 				 words.add(entry.getKey());
