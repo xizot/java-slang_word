@@ -7,23 +7,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileManager {
-	String resetPath, dataPath,searchHistoryPath,deleteHistoryPath;
+	String resetPath, dataPath,searchHistoryPath;
 	
 	FileManager(){
 		String sourceFolder = System.getProperty("user.dir");
 		this.resetPath = sourceFolder+"/data/backup.txt";
 		this.dataPath = sourceFolder+"/data/data.txt";
 		this.searchHistoryPath = sourceFolder+"/data/search-history.txt";
-		this.deleteHistoryPath = sourceFolder+"/data/delete-history.txt";
 	}
-	
-	FileManager(String resetPath, String dataPath, String searchHistoryPath, String  deleteHistoryPath){
-		this.resetPath = resetPath ;
-		this.dataPath= dataPath;
-		this.searchHistoryPath = searchHistoryPath;
-		this.deleteHistoryPath = deleteHistoryPath;
-	}
-	
+//
+//	FileManager(String resetPath, String dataPath, String searchHistoryPath, String  deleteHistoryPath){
+//		this.resetPath = resetPath ;
+//		this.dataPath= dataPath;
+//		this.searchHistoryPath = searchHistoryPath;
+//	}
+//
 	public boolean isValidFile(File file) {
 		if(!file.isDirectory()) return true;
 		return false;
